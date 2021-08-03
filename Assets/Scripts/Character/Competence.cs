@@ -1,0 +1,29 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using Unity.Mathematics;
+using UnityEngine;
+
+[Serializable]
+public class Competence 
+{
+	[SerializeField] private string _title = "";
+	[SerializeField] private int _value = 0;
+
+	public int Value
+	{
+		get { return _value; }
+		set
+		{
+			_value = math.clamp(value, 0, 10);
+		}
+	}
+
+	public string Title { get { return _title; } set { _title = value; } }
+
+	public void Init(string title, string value)
+	{
+		_title = title;
+		_value = int.Parse(value);
+	}
+}

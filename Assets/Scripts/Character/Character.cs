@@ -1,0 +1,81 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+[Serializable]
+public class Character
+{
+	public enum RingType : byte
+	{
+		Feu,
+		Air,
+		Terre,
+		Eau,
+		Vide
+	};
+
+	private const string FILENAME = "Character";
+	private static string[] TRAITS_NAME = new string[] { "AGI", "INTEL", "REF", "INTUI", "CON", "VOL", "FOR", "PER", "VIDE" };
+	private static string[] COMPETENCES_NAME = new string[]
+	{
+		"AGI",
+		"INTEL",
+		"REF",
+		"INTUI",
+		"CON",
+		"VOL",
+		"FOR",
+		"PER",
+		"VIDE"
+	};
+
+	private const int NB_RING = 5;
+
+	[SerializeField] private string _name = "";
+	[SerializeField] private List<Ring> _rings = new List<Ring>(5);
+	[SerializeField] private List<Competence> _competences = new List<Competence>();
+
+	public List<Ring> Rings { get { return _rings; } }
+	public List<Competence> Competences { get { return _competences; } }
+
+	public void InitCharacter(int nbCompetences)
+	{
+		if (_rings.Count < NB_RING)
+		{
+			_rings.Clear();
+			int traitIndex = 0;
+			for (int i = 0; i < NB_RING; i++)
+			{
+				Ring ring = new Ring();
+
+				if (traitIndex < TRAITS_NAME.Length)
+				{
+					Trait trait = new Trait(TRAITS_NAME[traitIndex], 2);
+					ring.AddTrait(trait);
+					traitIndex++;
+				}
+
+				if (traitIndex < TRAITS_NAME.Length)
+				{
+					Trait trait = new Trait(TRAITS_NAME[traitIndex], 2);
+					ring.AddTrait(trait);
+					traitIndex++;
+				}
+				_rings.Add(ring);
+			}
+		}
+
+		while (_competences.Count < nbCompetences)
+		{
+			Competence newCompetence = new Competence();
+			_competences.Add(new Competence());
+		}
+	}
+
+	public static string ComputeFilePath()
+	{
+		string filePath = Application.persistentDataPath + "/" + FILENAME + ".sav";
+		return filePath;
+	}
+}
