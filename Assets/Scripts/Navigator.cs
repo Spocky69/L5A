@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Navigator : MonoBehaviour
 {
@@ -12,13 +13,17 @@ public class Navigator : MonoBehaviour
 
 	[SerializeField] private RollDicesPage _rollDicesPage;
 	[SerializeField] private CharacterPage _characterPage;
-	
+	[SerializeField] private Button _characterPageButton;
+	[SerializeField] private Button _rollDicesPageButton;
+
 
 	private Page _page = Page.RollDices;
 
 	private void Start()
 	{
 		SetPage(Page.RollDices);
+		_characterPageButton.onClick.AddListener(OnSetRollDicesPageButton);
+		_rollDicesPageButton.onClick.AddListener(OnSetCharacterPageButton);
 	}
 
 	private void SetPage(Page page)
@@ -42,15 +47,13 @@ public class Navigator : MonoBehaviour
 		}
 	}
 
-	public void OnSetCharacterPageButton()
+	public void OnSetRollDicesPageButton()
 	{
-		SetPage(Page.Character);
+		SetPage(Page.RollDices);
 	}
 
 	public void OnSetCharacterPageButton()
 	{
 		SetPage(Page.Character);
 	}
-
-
 }
