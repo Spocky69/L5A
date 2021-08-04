@@ -6,6 +6,7 @@ using UnityEngine;
 public class CharacteristicsDrawer : MonoBehaviour
 {
 	[SerializeField] private List<RingDrawer> _ringDrawers = new List<RingDrawer>();
+	[SerializeField] private MonDrawer _monDrawer = new MonDrawer();
 
 	public void Reset()
 	{
@@ -22,6 +23,7 @@ public class CharacteristicsDrawer : MonoBehaviour
 		{
 			_ringDrawers[i].Init(character.Rings[i]);
 		}
+		_monDrawer.Init(character.Mon);
 	}
 
 	public void Edit(bool editValue)

@@ -35,9 +35,11 @@ public class Character
 	[SerializeField] private string _name = "";
 	[SerializeField] private List<Ring> _rings = new List<Ring>(5);
 	[SerializeField] private List<Competence> _competences = new List<Competence>();
+	[SerializeField] private Mon _mon = new Mon();
 
 	public List<Ring> Rings { get { return _rings; } }
 	public List<Competence> Competences { get { return _competences; } }
+	public Mon Mon { get { return _mon; } }
 
 	public void InitCharacter(int nbCompetences)
 	{
@@ -77,5 +79,5 @@ public class Character
 	{
 		string filePath = Application.persistentDataPath + "/" + FILENAME + ".sav";
 		return filePath;
-	}
+	}	
 }
