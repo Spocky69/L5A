@@ -1,16 +1,24 @@
+using System.Collections.Generic;
 using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CompetenceDrawer : MonoBehaviour
 {
 	[SerializeField] private TMP_InputField _value = null;
 	[SerializeField] private TMP_InputField _title = null;
 	[SerializeField] private SpecialtyDrawer _specialtyDrawer = null;
+	[SerializeField] private Button _button = null;
+	[SerializeField] private List<Image> _imagesSelection = new List<Image>();
+	[SerializeField] private Color _neutralColor = Color.white;
+	[SerializeField] private Color _selectColor = Color.red;
 
 	private Competence _competence = null;
+	private bool _select = false;
+	private CompetencesDrawer _competencesDrawer = null;
 
-	public void Reset()
+	public void Reset(CompetencesDrawer competencesDrawer)
 	{
 		_value.enabled = false;
 		_title.enabled = false;
@@ -19,6 +27,10 @@ public class CompetenceDrawer : MonoBehaviour
 		_value.onSubmit.RemoveListener(OnSubmitValueEvent);
 		_value.onSubmit.AddListener(OnSubmitValueEvent);
 		_specialtyDrawer.Reset();
+		_select = false;
+		_button.onClick.AddListener(OnButtonSelect);
+		_button.enabled = true;
+		_competencesDrawer = competencesDrawer;
 	}
 
 	public void Init(Competence competence)
@@ -77,5 +89,32 @@ public class CompetenceDrawer : MonoBehaviour
 	{
 		_value.enabled = editValue;
 		_title.enabled = editValue;
+	}
+
+	public void SetSelected(bool select)
+	{
+		_select = select;
+		Color color = _neutralColor;
+		if (_select)
+		{
+			color = _selectColor;
+		}
+
+		foreach (Image image in _imagesSelection)
+		{
+			image.color = color;
+		}
+	}
+
+	public void OnButtonSelect()
+	{
+		if (_select == false)
+		{
+			_competencesDrawer.SetSelected(this);
+		}
+		else
+		{
+			_competencesDrawer.SetSelected(null);
+		}
 	}
 }

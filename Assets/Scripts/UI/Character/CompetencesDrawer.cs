@@ -12,7 +12,7 @@ public class CompetencesDrawer : MonoBehaviour
 	{
 		foreach (CompetenceDrawer competenceDrawer in _competencesDrawers)
 		{
-			competenceDrawer.Reset();
+			competenceDrawer.Reset(this);
 		}
 	}
 
@@ -33,6 +33,14 @@ public class CompetencesDrawer : MonoBehaviour
 		foreach (CompetenceDrawer competenceDrawer in _competencesDrawers)
 		{
 			competenceDrawer.Edit(edit);
+		}
+	}
+
+	public void SetSelected(CompetenceDrawer competenceDrawerSelected)
+	{
+		foreach (CompetenceDrawer competenceDrawer in _competencesDrawers)
+		{
+			competenceDrawer.SetSelected(competenceDrawer == competenceDrawerSelected);
 		}
 	}
 }

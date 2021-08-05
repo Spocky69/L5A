@@ -25,6 +25,7 @@ public class TraitDrawer : MonoBehaviour
 		_inputField.enabled = false;
 		_select = false;
 		_button.onClick.AddListener(OnButtonSelect);
+		_button.enabled = true;
 	}
 
 	private void OnValueChangeText(string text)
@@ -63,6 +64,8 @@ public class TraitDrawer : MonoBehaviour
 	public void Edit(bool editValue)
 	{
 		_inputField.enabled = editValue;
+		_button.enabled = !editValue;
+		_ringDrawer.CharacteristicsDrawer.SetSelected(null);
 	}
 
 	public void SetSelected(bool select)
@@ -82,6 +85,13 @@ public class TraitDrawer : MonoBehaviour
 
 	public void OnButtonSelect()
 	{
-		_ringDrawer.CharacteristicsDrawer.SetSelected(this);
+		if(_select == false)
+		{
+			_ringDrawer.CharacteristicsDrawer.SetSelected(this);
+		}
+		else
+		{
+			_ringDrawer.CharacteristicsDrawer.SetSelected(null);
+		}
 	}
 }

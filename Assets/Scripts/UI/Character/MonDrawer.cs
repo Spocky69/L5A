@@ -32,4 +32,9 @@ class MonDrawer : MonoBehaviour
 		_mon.ImageIndex = newIndex;
 		SetImageIndex(_mon.ImageIndex);
 	}
+
+	public void Edit(bool editValue)
+	{
+		_button.enabled = editValue;
+	}
 }
