@@ -9,6 +9,10 @@ public class RingDrawer : MonoBehaviour
 	[SerializeField] private List<TraitDrawer> _traitsDrawer = new List<TraitDrawer>();
 
 	private Ring _ring;
+	private CharacteristicsDrawer _characteristicsDrawer;
+
+	public CharacteristicsDrawer CharacteristicsDrawer { get { return _characteristicsDrawer; } }
+	public List<TraitDrawer> TraitsDrawer { get { return _traitsDrawer; } }
 
 	public void Init(Ring ring)
 	{
@@ -20,11 +24,12 @@ public class RingDrawer : MonoBehaviour
 		Update();
 	}
 
-	public void Reset()
+	public void Reset(CharacteristicsDrawer characteristicsDrawer)
 	{
+		_characteristicsDrawer = characteristicsDrawer;
 		foreach (TraitDrawer traitDrawer in _traitsDrawer)
 		{
-			traitDrawer.Reset();
+			traitDrawer.Reset(this);
 		}
 	}
 

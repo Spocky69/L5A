@@ -12,7 +12,7 @@ public class CharacteristicsDrawer : MonoBehaviour
 	{
 		foreach (RingDrawer ringDrawer in _ringDrawers)
 		{
-			ringDrawer.Reset();
+			ringDrawer.Reset(this);
 		}
 	}
 
@@ -24,6 +24,17 @@ public class CharacteristicsDrawer : MonoBehaviour
 			_ringDrawers[i].Init(character.Rings[i]);
 		}
 		_monDrawer.Init(character.Mon);
+	}
+
+	public void SetSelected(TraitDrawer traitDrawerSelected)
+	{
+		foreach (RingDrawer ringDrawer in _ringDrawers)
+		{
+			foreach (TraitDrawer traitDrawer in ringDrawer.TraitsDrawer)
+			{
+				traitDrawer.SetSelected(traitDrawer == traitDrawerSelected);
+			}
+		}
 	}
 
 	public void Edit(bool editValue)
