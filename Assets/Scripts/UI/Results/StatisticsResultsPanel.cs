@@ -4,9 +4,12 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StatisticsResultsPanel : MonoBehaviour
 {
+	[SerializeField] private bool _activateByDefault = true;
+	[SerializeField] private Button _button = null;
 	[SerializeField] private List<StatisticsResultColumnDrawer> _statisticsResultDrawers = new List<StatisticsResultColumnDrawer>();
 
 	public void Reset()
@@ -15,10 +18,18 @@ public class StatisticsResultsPanel : MonoBehaviour
 		{
 			statisticsResultCollumnDrawer.Reset();
 		}
+		gameObject.SetActive(_activateByDefault);
+
+		if (_button != null)
+		{
+			_button.onClick.RemoveListener(OnButtonClose);
+			_button.onClick.AddListener(OnButtonClose);
+		}
 	}
 
 	public void FillValueFromResult()
 	{
+		gameObject.SetActive(true);
 		RollDicesSystem rollDicesSystem = World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<RollDicesSystem>();
 		NativeArray<StatisticsRollerResult> statisticsRollerResults = rollDicesSystem.NativeArrayStatisticsRollerResult;
 		int statisticsRollerResultsIndex = 0;
@@ -44,7 +55,7 @@ public class StatisticsResultsPanel : MonoBehaviour
 				if (statisticsRollerResultsIndex < statisticsRollerResults.Length)
 				{
 					StatisticsRollerResult statisticsRollerResult = statisticsRollerResults[statisticsRollerResultsIndex];
-					statisticsResultDrawer.Fill((statisticsRollerResultsIndex+1)*5, statisticsRollerResult.PercentValue);
+					statisticsResultDrawer.Fill((statisticsRollerResultsIndex + 1) * 5, statisticsRollerResult.PercentValue);
 					statisticsRollerResultsIndex++;
 				}
 				else
@@ -53,5 +64,10 @@ public class StatisticsResultsPanel : MonoBehaviour
 				}
 			}
 		}
+	}
+
+	public void OnButtonClose()
+	{
+		gameObject.SetActive(false);
 	}
 }

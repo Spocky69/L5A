@@ -35,12 +35,16 @@ public class RingDrawer : MonoBehaviour
 
 	public void Update()
 	{
-		int ring = 10;
-		foreach (Trait trait in _ring.Traits)
+		if (_ring != null)
 		{
-			ring = math.min(trait.Value, ring);
+			int ring = 10;
+			foreach (Trait trait in _ring.Traits)
+			{
+				ring = math.min(trait.Value, ring);
+			}
+			_valueText.text = ring.ToString();
 		}
-		_valueText.text = ring.ToString();
+
 	}
 
 	public void Edit(bool editValue)

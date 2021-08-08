@@ -15,7 +15,7 @@ public class Trait
 		get { return _value; }
 		set
 		{
-			_value = math.clamp(value, 0, 10);
+			_value = value;
 		}
 	}
 

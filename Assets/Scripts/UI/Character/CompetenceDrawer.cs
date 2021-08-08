@@ -18,27 +18,32 @@ public class CompetenceDrawer : MonoBehaviour
 	private bool _select = false;
 	private CompetencesDrawer _competencesDrawer = null;
 
+	public int Value { get { return _competence.Value; } }
+	public int BonusValue { get { return _competence.BonusValue; } }
+	public int NbFreeAugmentations { get { return _competence.NbFreeAugmentations; } }
+
 	public void Reset(CompetencesDrawer competencesDrawer)
 	{
-		_value.enabled = false;
 		_title.enabled = false;
-		_title.onSubmit.RemoveListener(OnSubmitTitleEvent);
-		_title.onSubmit.AddListener(OnSubmitTitleEvent);
-		_value.onSubmit.RemoveListener(OnSubmitValueEvent);
-		_value.onSubmit.AddListener(OnSubmitValueEvent);
-		_specialtyDrawer.Reset();
+		_title.onEndEdit.RemoveListener(OnSubmitTitleEvent);
+		_title.onEndEdit.AddListener(OnSubmitTitleEvent);
+		_value.enabled = false;
+		_value.onEndEdit.RemoveListener(OnSubmitValueEvent);
+		_value.onEndEdit.AddListener(OnSubmitValueEvent);
+		_specialtyDrawer.Reset(this);
 		_select = false;
 		_button.onClick.AddListener(OnButtonSelect);
 		_button.enabled = true;
 		_competencesDrawer = competencesDrawer;
+		SetSelected(false);
 	}
 
 	public void Init(Competence competence)
 	{
 		_competence = competence;
-
 		_value.text = ComputeTextFromValue(_competence.Value);
 		_title.text = ComputeTextFromTitle(_competence.Title);
+		_specialtyDrawer.Init(competence);
 	}
 
 	private string ComputeTextFromValue(int value)
@@ -89,6 +94,7 @@ public class CompetenceDrawer : MonoBehaviour
 	{
 		_value.enabled = editValue;
 		_title.enabled = editValue;
+		_competencesDrawer.SetSelected(null);
 	}
 
 	public void SetSelected(bool select)
@@ -116,5 +122,10 @@ public class CompetenceDrawer : MonoBehaviour
 		{
 			_competencesDrawer.SetSelected(null);
 		}
+	}
+
+	public void OnUpdateValue()
+	{
+		_competencesDrawer.OnUpdateValue();
 	}
 }

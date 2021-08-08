@@ -7,11 +7,26 @@ class SpecialtyDrawer : MonoBehaviour
 	[SerializeField] private Color _selectedColor = Color.green;
 	[SerializeField] private Color _unselectedColor = Color.white;
 
-	private bool _selected = false;
+	private Competence _competence = null;
+	private CompetenceDrawer _competencesDrawer = null;
 
-	public void Reset()
+	public void Reset(CompetenceDrawer competencesDrawer)
 	{
+		_competencesDrawer = competencesDrawer;
 		_button.onClick.AddListener(OnButtonPush);
+	}
+
+	public void Init(Competence competence)
+	{
+		_competence = competence;
+		if(_competence.Specialized)
+		{
+			SetColor(_selectedColor);
+		}
+		else
+		{
+			SetColor(_unselectedColor);
+		}
 	}
 
 	public void Unselect()
@@ -40,8 +55,8 @@ class SpecialtyDrawer : MonoBehaviour
 
 	public void OnButtonPush()
 	{
-		_selected = !_selected;
-		if (_selected)
+		_competence.Specialized = !_competence.Specialized;
+		if (_competence.Specialized)
 		{
 			Select();
 		}
@@ -49,5 +64,6 @@ class SpecialtyDrawer : MonoBehaviour
 		{
 			Unselect();
 		}
+		_competencesDrawer.OnUpdateValue();
 	}
 }

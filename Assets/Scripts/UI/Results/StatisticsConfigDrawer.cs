@@ -9,6 +9,7 @@ public class StatisticsConfigDrawer : MonoBehaviour
 	[SerializeField] private TMP_Text _nbKeepDices = null;
 	[SerializeField] private TMP_Text _plus = null;
 	[SerializeField] private TMP_Text _bonus = null;
+	[SerializeField] private TMP_Text _nbAugmentation = null;
 
 	public void Reset()
 	{
@@ -20,9 +21,11 @@ public class StatisticsConfigDrawer : MonoBehaviour
 		_nbKeepDices.text = "0";
 		_bonus.gameObject.SetActive(false);
 		_bonus.text = "0";
+		_nbAugmentation.gameObject.SetActive(false);
+		_nbAugmentation.text = "0";
 	}
 
-	public void Fill(RollDiceConfig rollDiceConfig)
+	public void Fill(RollDicesConfig rollDiceConfig)
 	{
 		_g.gameObject.SetActive(true);
 		_plus.gameObject.SetActive(true);
@@ -32,5 +35,12 @@ public class StatisticsConfigDrawer : MonoBehaviour
 		_nbKeepDices.text = rollDiceConfig.NbKeepDice.ToString();
 		_bonus.gameObject.SetActive(true);
 		_bonus.text = rollDiceConfig.Bonus.ToString();
+		if (_nbAugmentation != null)
+		{
+			_nbAugmentation.gameObject.SetActive(true);
+			_nbAugmentation.text = rollDiceConfig.NbFreeAugmentations.ToString();
+		}
 	}
+
+
 }

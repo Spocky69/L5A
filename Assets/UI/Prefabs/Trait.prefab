@@ -236,6 +236,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 868ef3aa30703a943866c17eeb909ede, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _alwaysEdit: 0
+  _minValue: 1
+  _maxValue: 9
   _title: {fileID: 3265212079193052267}
   _inputField: {fileID: 3265212078958037379}
   _button: {fileID: 2323559317910483880}

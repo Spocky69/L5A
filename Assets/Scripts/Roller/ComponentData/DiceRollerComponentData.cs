@@ -12,7 +12,7 @@ public struct DiceRollerComponentData : IComponentData
 		Random = new Random((uint)((entity.Index+1+ timeSinceStartUp)));
 	}
 
-	public void RollDices(in RollDiceConfig rollDiceConfig, ref DynamicBuffer<DiceResultBufferElementData> statefulCollisionEventBuffer)
+	public void RollDices(in RollDicesConfig rollDiceConfig, ref DynamicBuffer<DiceResultBufferElementData> statefulCollisionEventBuffer)
 	{
 		statefulCollisionEventBuffer.Clear(); 
 		for (int i = 0; i < rollDiceConfig.NbLaunchDice; i++)

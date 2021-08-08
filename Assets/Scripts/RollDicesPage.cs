@@ -10,7 +10,7 @@ public class RollDicesPage : MonoBehaviour
 	[SerializeField] private Button _buttonLaunch = null;
 	[SerializeField] private Button _buttonReset = null;
 	[SerializeField] private StatisticsConfigDrawer _statisticsConfigDrawer = null;
-	
+
 
 	// Start is called before the first frame update
 	private void Start()
@@ -30,8 +30,9 @@ public class RollDicesPage : MonoBehaviour
 	public async void OnButtonLaunch()
 	{
 		_buttonLaunch.interactable = false;
-		RollDiceConfig rollDiceConfig = _diceRoller.CreateRollConfig();
-		await _diceRoller.Launch(rollDiceConfig);
+		_results.gameObject.SetActive(true);
+		RollDicesConfig rollDiceConfig = _diceRoller.CreateRollConfig();
+		await RollDicesSystem.Launch(rollDiceConfig);
 		_results.FillValueFromResult();
 		_buttonLaunch.interactable = true;
 		_statisticsConfigDrawer.Fill(rollDiceConfig);

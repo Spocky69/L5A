@@ -2,17 +2,21 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class CharacterPage : MonoBehaviour
 {
-	[SerializeField] private CharacteristicsDrawer _characteristicsDrawer;
-	[SerializeField] private CompetencesDrawer _competencesDrawer;
+	[SerializeField] private CharacteristicsDrawer _characteristicsDrawer = null;
+	[SerializeField] private CompetencesDrawer _competencesDrawer = null;
+	[SerializeField] private DiceRollerCharacterDrawer _diceRollerCharacterDrawer = null;
+	[SerializeField] private StatisticsResultsPanel _statisticsResultsPanel = null;
 
 	[Header("Buttons")]
 	[SerializeField] private Button _buttonLoad;
 	[SerializeField] private ButtonEdit _buttonEdit;
+	[SerializeField] private Button _buttonLaunch;
 
 	private Character _character = null;
 
@@ -24,11 +28,15 @@ public class CharacterPage : MonoBehaviour
 
 	private void Reset()
 	{
-		_characteristicsDrawer.Reset();
-		_competencesDrawer.Reset();
+		_characteristicsDrawer.Reset(this);
+		_competencesDrawer.Reset(this);
 		_buttonEdit.Reset();
 		_buttonEdit.SaveEventHandler += Save;
 		_buttonEdit.EditEventHandler += Edit;
+		_buttonLaunch.onClick.RemoveListener(OnButtonLaunch);
+		_buttonLaunch.onClick.AddListener(OnButtonLaunch);
+		_diceRollerCharacterDrawer.Reset();
+		_statisticsResultsPanel.Reset();
 		Load();
 	}
 
@@ -54,6 +62,11 @@ public class CharacterPage : MonoBehaviour
 		_competencesDrawer.Init(_character);
 	}
 
+	public void OnUpdateValue()
+	{
+		_diceRollerCharacterDrawer.OnUpdateValue();
+	}
+
 	private void Save()
 	{
 		string data = JsonUtility.ToJson(_character);
@@ -67,5 +80,25 @@ public class CharacterPage : MonoBehaviour
 	{
 		_characteristicsDrawer.Edit(true);
 		_competencesDrawer.Edit(true);
+	}
+
+	public void SetSelectedCompetenceDrawer(CompetenceDrawer competenceDrawer)
+	{
+		_diceRollerCharacterDrawer.SetSelectedCompetenceDrawer(competenceDrawer);
+	}
+
+	public void SetSelectedTraitDrawer(TraitDrawer traitDrawer)
+	{
+		_diceRollerCharacterDrawer.SetSelectedTraitDrawer(traitDrawer);
+	}
+
+	public async void OnButtonLaunch()
+	{
+		_buttonLaunch.interactable = false;
+		RollDicesConfig rollDicesConfig = _diceRollerCharacterDrawer.ComputeRollDicesConfig();
+		await RollDicesSystem.Launch(rollDicesConfig);
+		_statisticsResultsPanel.FillValueFromResult();
+		_buttonLaunch.interactable = true;
+
 	}
 }

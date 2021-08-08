@@ -965,7 +965,7 @@ MonoBehaviour:
   _imagesSelection:
   - {fileID: 4608230150510221599}
   _neutralColor: {r: 1, g: 1, b: 1, a: 0}
-  _selectColor: {r: 1, g: 0, b: 0, a: 1}
+  _selectColor: {r: 1, g: 0, b: 0.039559364, a: 1}
 --- !u!1 &3702377257665440904
 GameObject:
   m_ObjectHideFlags: 0
@@ -1151,7 +1151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _button: {fileID: 2104206138867478084}
-  _selectedColor: {r: 0, g: 1, b: 0, a: 1}
+  _selectedColor: {r: 1, g: 0, b: 0.051016808, a: 1}
   _unselectedColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &5279352815008647258
 GameObject:

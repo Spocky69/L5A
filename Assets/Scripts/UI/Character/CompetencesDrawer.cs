@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,8 +9,11 @@ public class CompetencesDrawer : MonoBehaviour
 
 	public int NbCompencesDrawer { get { return _competencesDrawers.Count; } }
 
-	public void Reset()
+	private CharacterPage _characterPage = null;
+
+	public void Reset(CharacterPage characterPage)
 	{
+		_characterPage = characterPage;
 		foreach (CompetenceDrawer competenceDrawer in _competencesDrawers)
 		{
 			competenceDrawer.Reset(this);
@@ -42,5 +46,11 @@ public class CompetencesDrawer : MonoBehaviour
 		{
 			competenceDrawer.SetSelected(competenceDrawer == competenceDrawerSelected);
 		}
+		_characterPage.SetSelectedCompetenceDrawer(competenceDrawerSelected);
+	}
+
+	public void OnUpdateValue()
+	{
+		_characterPage.OnUpdateValue();
 	}
 }

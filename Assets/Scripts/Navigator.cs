@@ -21,7 +21,7 @@ public class Navigator : MonoBehaviour
 
 	private void Start()
 	{
-		SetPage(Page.RollDices);
+		SetPage(Page.Character);
 		_characterPageButton.onClick.AddListener(OnSetRollDicesPageButton);
 		_rollDicesPageButton.onClick.AddListener(OnSetCharacterPageButton);
 	}

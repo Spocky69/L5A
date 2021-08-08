@@ -6,10 +6,15 @@ using UnityEngine;
 public class CharacteristicsDrawer : MonoBehaviour
 {
 	[SerializeField] private List<RingDrawer> _ringDrawers = new List<RingDrawer>();
+	[SerializeField] private TraitDrawer _nbVoidPointsDrawer = null;
 	[SerializeField] private MonDrawer _monDrawer = new MonDrawer();
 
-	public void Reset()
+	private CharacterPage _characterPage = null;
+
+	public void Reset(CharacterPage characterPage)
 	{
+		_characterPage = characterPage;
+		_nbVoidPointsDrawer.Reset(null);
 		foreach (RingDrawer ringDrawer in _ringDrawers)
 		{
 			ringDrawer.Reset(this);
@@ -24,6 +29,7 @@ public class CharacteristicsDrawer : MonoBehaviour
 			_ringDrawers[i].Init(character.Rings[i]);
 		}
 		_monDrawer.Init(character.Mon);
+		_nbVoidPointsDrawer.Init(character.NbVoidPoints);
 	}
 
 	public void SetSelected(TraitDrawer traitDrawerSelected)
@@ -35,6 +41,7 @@ public class CharacteristicsDrawer : MonoBehaviour
 				traitDrawer.SetSelected(traitDrawer == traitDrawerSelected);
 			}
 		}
+		_characterPage.SetSelectedTraitDrawer(traitDrawerSelected);
 	}
 
 	public void Edit(bool editValue)
@@ -43,5 +50,6 @@ public class CharacteristicsDrawer : MonoBehaviour
 		{
 			ringDrawer.Edit(editValue);
 		}
+		_nbVoidPointsDrawer.Edit(true);
 	}
 }

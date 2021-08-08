@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class DiceRollerPanel : MonoBehaviour
 {
-	private const int DELAY_DURATION_IN_MS = 100;
+	
 
 	[SerializeField] private ValueChooserDrawer _launchDicesChooser = null;
 	[SerializeField] private ValueChooserDrawer _keepDicesChooser = null;
@@ -26,24 +26,13 @@ public class DiceRollerPanel : MonoBehaviour
 		_bonusChooser.Reset(int.MinValue, int.MaxValue);
 	}
 
-	public RollDiceConfig CreateRollConfig()
+	public RollDicesConfig CreateRollConfig()
 	{
-		RollDiceConfig rollDiceConfig = new RollDiceConfig();
+		RollDicesConfig rollDiceConfig = new RollDicesConfig();
 		rollDiceConfig.NbLaunchDice = _launchDicesChooser.CurValue;
 		rollDiceConfig.NbKeepDice = _keepDicesChooser.CurValue;
 		rollDiceConfig.Bonus = _bonusChooser.CurValue;
 		return rollDiceConfig;
-	}
-
-	public async Task Launch(RollDiceConfig rollDiceConfig)
-	{
-		RollDicesSystem rollDicesSystem = World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<RollDicesSystem>();
-		rollDicesSystem.LaunchRollDices(rollDiceConfig);
-
-		while (rollDicesSystem.LaunchingState != RollDicesSystem.States.Waiting)
-		{
-			await Task.Delay(DELAY_DURATION_IN_MS);
-		}
 	}
 
 	private void OnLaunchDiceDown()

@@ -1,10 +1,12 @@
-﻿using Unity.Collections;
+﻿using System.Threading.Tasks;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 
 class RollDicesSystem : SystemBase
 {
 	private const int NB_ROLL_DICE = 1000000;
+	private const int DELAY_DURATION_IN_MS = 100;
 
 	public enum States
 	{
@@ -14,14 +16,25 @@ class RollDicesSystem : SystemBase
 	}
 
 	private States _launchingState = States.Waiting;
-	private RollDiceConfig _rollDiceConfig = new RollDiceConfig();
+	private RollDicesConfig _rollDiceConfig = new RollDicesConfig();
 	private NativeArray<StatisticsRollerResult> _nativeArrayStatisticsRollerResult;
 
 	public States LaunchingState { get { return _launchingState; } }
 	public NativeArray<StatisticsRollerResult> NativeArrayStatisticsRollerResult { get { return _nativeArrayStatisticsRollerResult; } }
-	
 
-	public void LaunchRollDices(RollDiceConfig rollDiceConfig)
+	static public async Task Launch(RollDicesConfig rollDiceConfig)
+	{
+		RollDicesSystem rollDicesSystem = World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<RollDicesSystem>();
+		rollDicesSystem.LaunchRollDices(rollDiceConfig);
+
+		while (rollDicesSystem.LaunchingState != RollDicesSystem.States.Waiting)
+		{
+			await Task.Delay(DELAY_DURATION_IN_MS);
+		}
+	}
+
+
+	public void LaunchRollDices(RollDicesConfig rollDiceConfig)
 	{
 		if (_launchingState == States.Waiting)
 		{
@@ -51,7 +64,7 @@ class RollDicesSystem : SystemBase
 
 	protected override void OnUpdate()
 	{
-		RollDiceConfig rollDiceConfig = _rollDiceConfig;
+		RollDicesConfig rollDiceConfig = _rollDiceConfig;
 
 		float timeSinceStartUp = (uint)(UnityEngine.Time.realtimeSinceStartup);
 
