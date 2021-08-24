@@ -13,10 +13,7 @@ public class Trait
 	public int Value
 	{
 		get { return _value; }
-		set
-		{
-			_value = value;
-		}
+		set { _value = value; }
 	}
 
 	public string Title { get { return _title; } }

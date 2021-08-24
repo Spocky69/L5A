@@ -10,9 +10,10 @@ class MonDrawer : MonoBehaviour
 
 	private Mon _mon = null;
 
-	private void Start()
+	public void Reset()
 	{
 		_button.onClick.AddListener(OnMonButtonPush);
+		_button.enabled = false;
 	}
 
 	public void Init(Mon mon)

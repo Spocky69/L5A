@@ -35,11 +35,15 @@ public class Character
 	[SerializeField] private string _name = "";
 	[SerializeField] private List<Ring> _rings = new List<Ring>(5);
 	[SerializeField] private List<Competence> _competences = new List<Competence>();
+	[SerializeField] private Rang _rangDeMaitrise = null;
+	[SerializeField] private Rang _rangDeReputation = null;
 	[SerializeField] private Trait _nbVoidPoints = new Trait("PTS DE VIDE", 2);
 	[SerializeField] private Mon _mon = new Mon();
 
 	public List<Ring> Rings { get { return _rings; } }
 	public List<Competence> Competences { get { return _competences; } }
+	public Rang RangDeMaitrise { get { return _rangDeMaitrise; } }
+	public Rang RangDeReputation { get { return _rangDeReputation; } }
 	public Trait NbVoidPoints { get { return _nbVoidPoints; } }
 	public Mon Mon { get { return _mon; } }
 
@@ -68,6 +72,18 @@ public class Character
 				}
 				_rings.Add(ring);
 			}
+		}
+
+		if(_rangDeMaitrise == null || _rangDeMaitrise.IsValid() == false)
+		{
+			_rangDeMaitrise = new Rang("Rang De Maitrise");
+			_rangDeMaitrise.Value = 5;
+		}
+
+		if (_rangDeReputation == null || _rangDeReputation.IsValid() == false)
+		{
+			_rangDeReputation = new Rang("Rang De Reputation");
+			_rangDeReputation.Value = 5;
 		}
 
 		while (_competences.Count < nbCompetences)

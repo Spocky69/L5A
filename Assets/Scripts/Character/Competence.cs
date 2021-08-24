@@ -5,7 +5,7 @@ using Unity.Mathematics;
 using UnityEngine;
 
 [Serializable]
-public class Competence
+public class Competence : ICompetence
 {
 	[SerializeField] private string _title = "";
 	[SerializeField] private int _value = 0;
@@ -20,14 +20,8 @@ public class Competence
 		}
 	}
 	public int BonusValue { get { return _specialized ? _value : 0; } }
-	public int NbFreeAugmentations { get { return _value > 5 ? 1 : 0; } }
+	public int NbFreeAugmentations { get { return _value >= 5 ? 1 : 0; } }
 
 	public string Title { get { return _title; } set { _title = value; } }
 	public bool Specialized { get { return _specialized; } set { _specialized = value; } }
-
-	public void Init(string title, string value)
-	{
-		_title = title;
-		_value = int.Parse(value);
-	}
 }

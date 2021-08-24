@@ -4,7 +4,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TraitDrawer : MonoBehaviour
+public class TraitDrawer : MonoBehaviour, ISelected
 {
 	[SerializeField] private bool _alwaysEdit = false;
 	[SerializeField] private int _minValue = 1;
@@ -29,8 +29,11 @@ public class TraitDrawer : MonoBehaviour
 		_inputField.onValueChanged.AddListener(OnValueChangeText);
 		_inputField.enabled = _alwaysEdit;
 		_select = false;
-		_button.onClick.AddListener(OnButtonSelect);
-		_button.enabled = true;
+		if (_button != null)
+		{
+			_button.onClick.AddListener(OnButtonSelect);
+			_button.enabled = true;
+		}
 	}
 
 	private void OnValueChangeText(string text)
@@ -66,7 +69,12 @@ public class TraitDrawer : MonoBehaviour
 	public void Edit(bool editValue)
 	{
 		_inputField.enabled = editValue || _alwaysEdit;
-		_button.enabled = !editValue;
+
+		if (_button != null)
+		{
+			_button.enabled = !editValue;
+		}
+
 		if (_ringDrawer != null)
 		{
 			_ringDrawer.CharacteristicsDrawer.SetSelected(null);

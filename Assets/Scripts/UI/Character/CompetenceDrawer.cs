@@ -4,7 +4,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CompetenceDrawer : MonoBehaviour
+public class CompetenceDrawer : MonoBehaviour, ISelected
 {
 	[SerializeField] private TMP_InputField _value = null;
 	[SerializeField] private TMP_InputField _title = null;
@@ -14,7 +14,7 @@ public class CompetenceDrawer : MonoBehaviour
 	[SerializeField] private Color _neutralColor = Color.white;
 	[SerializeField] private Color _selectColor = Color.red;
 
-	private Competence _competence = null;
+	private ICompetence _competence = null;
 	private bool _select = false;
 	private CompetencesDrawer _competencesDrawer = null;
 
@@ -30,7 +30,10 @@ public class CompetenceDrawer : MonoBehaviour
 		_value.enabled = false;
 		_value.onEndEdit.RemoveListener(OnSubmitValueEvent);
 		_value.onEndEdit.AddListener(OnSubmitValueEvent);
-		_specialtyDrawer.Reset(this);
+		if (_specialtyDrawer != null)
+		{
+			_specialtyDrawer.Reset(this);
+		}
 		_select = false;
 		_button.onClick.AddListener(OnButtonSelect);
 		_button.enabled = true;
@@ -38,18 +41,21 @@ public class CompetenceDrawer : MonoBehaviour
 		SetSelected(false);
 	}
 
-	public void Init(Competence competence)
+	public void Init(ICompetence competence)
 	{
 		_competence = competence;
 		_value.text = ComputeTextFromValue(_competence.Value);
 		_title.text = ComputeTextFromTitle(_competence.Title);
-		_specialtyDrawer.Init(competence);
+		if (_specialtyDrawer != null)
+		{
+			_specialtyDrawer.Init(competence);
+		}
 	}
 
 	private string ComputeTextFromValue(int value)
 	{
 		string text = "";
-		if (value > 1)
+		if (value >= 0)
 		{
 			text = value.ToString();
 		}

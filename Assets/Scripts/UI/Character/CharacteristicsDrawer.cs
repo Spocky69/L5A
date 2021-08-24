@@ -15,6 +15,7 @@ public class CharacteristicsDrawer : MonoBehaviour
 	{
 		_characterPage = characterPage;
 		_nbVoidPointsDrawer.Reset(null);
+		_monDrawer.Reset();
 		foreach (RingDrawer ringDrawer in _ringDrawers)
 		{
 			ringDrawer.Reset(this);
@@ -30,16 +31,18 @@ public class CharacteristicsDrawer : MonoBehaviour
 		}
 		_monDrawer.Init(character.Mon);
 		_nbVoidPointsDrawer.Init(character.NbVoidPoints);
+		_nbVoidPointsDrawer.Edit(true);
 	}
 
-	public void SetSelected(TraitDrawer traitDrawerSelected)
+	public void SetSelected(ISelected traitDrawerSelected)
 	{
 		foreach (RingDrawer ringDrawer in _ringDrawers)
 		{
-			foreach (TraitDrawer traitDrawer in ringDrawer.TraitsDrawer)
+			foreach (ISelected traitDrawer in ringDrawer.TraitsDrawer)
 			{
 				traitDrawer.SetSelected(traitDrawer == traitDrawerSelected);
 			}
+			ringDrawer.SetSelected((ISelected)ringDrawer == traitDrawerSelected);
 		}
 		_characterPage.SetSelectedTraitDrawer(traitDrawerSelected);
 	}
@@ -50,6 +53,6 @@ public class CharacteristicsDrawer : MonoBehaviour
 		{
 			ringDrawer.Edit(editValue);
 		}
-		_nbVoidPointsDrawer.Edit(true);
+		_monDrawer.Edit(editValue);
 	}
 }

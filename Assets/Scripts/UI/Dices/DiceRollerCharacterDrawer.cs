@@ -5,19 +5,23 @@ using UnityEngine.UI;
 
 class DiceRollerCharacterDrawer : MonoBehaviour
 {
-	[SerializeField] private TraitDrawer _nbVoidPointDrawer = null;
+	[SerializeField] private TraitDrawer _nbBonusPointsDrawer = null;
+	[SerializeField] private TraitDrawer _nbVoidPointsDrawer = null;
 	[SerializeField] private StatisticsConfigDrawer _statisticsConfigDrawer = null;
 	[SerializeField] private Button _launchButton = null;
 
 	private CompetenceDrawer _selectedCompetenceDrawer = null;
-	private TraitDrawer _selectedTraitDrawer = null;
+	private ISelected _selectedTraitDrawer = null;
 	private Trait _nbVoidPoints = new Trait("PTS DE VIDE", 0);
+	private Trait _nbNonusPoints = new Trait("PTS BONUS", 0);
 
 	public void Reset()
 	{
 		UpdateRollDicesConfig();
-		_nbVoidPointDrawer.Reset(null);
-		_nbVoidPointDrawer.Init(_nbVoidPoints);
+		_nbVoidPointsDrawer.Reset(null);
+		_nbVoidPointsDrawer.Init(_nbNonusPoints);
+		_nbBonusPointsDrawer.Reset(null);
+		_nbBonusPointsDrawer.Init(_nbVoidPoints);
 	}
 
 	public void SetSelectedCompetenceDrawer(CompetenceDrawer competenceDrawer)
@@ -26,7 +30,7 @@ class DiceRollerCharacterDrawer : MonoBehaviour
 		UpdateRollDicesConfig();
 	}
 
-	public void SetSelectedTraitDrawer(TraitDrawer traitDrawer)
+	public void SetSelectedTraitDrawer(ISelected traitDrawer)
 	{
 		_selectedTraitDrawer = traitDrawer;
 		UpdateRollDicesConfig();
@@ -53,7 +57,7 @@ class DiceRollerCharacterDrawer : MonoBehaviour
 		}
 
 		int nbLaunchDices = nbKeepDices;
-		int bonus = 0;
+		int bonus = _nbNonusPoints.Value;
 		int nbFreeAugmenations = 0;
 		if (_selectedCompetenceDrawer != null)
 		{
@@ -62,21 +66,18 @@ class DiceRollerCharacterDrawer : MonoBehaviour
 			nbFreeAugmenations += _selectedCompetenceDrawer.NbFreeAugmentations;
 		}
 
-		if (nbKeepDices > 10)
-		{
-			bonus += (nbKeepDices - 10) * 5;
-			nbKeepDices = 10;
-		}
-
 		if (nbLaunchDices > 10)
 		{
 			int nbLaunchDicesAbove10 = nbLaunchDices - 10;
 			int nbKeepDicesToAdd = nbLaunchDicesAbove10 / 2;
-
 			nbKeepDices += nbKeepDicesToAdd;
 			nbLaunchDices -= (nbKeepDicesToAdd * 2);
-			nbFreeAugmenations = math.max(0, nbKeepDices - 10);
-			nbKeepDices -= nbFreeAugmenations;
+		}
+
+		if (nbKeepDices > 10)
+		{
+			nbFreeAugmenations += (nbKeepDices - 10);
+			nbKeepDices = 10;
 		}
 
 		rollDicesConfig.NbKeepDice = nbKeepDices;

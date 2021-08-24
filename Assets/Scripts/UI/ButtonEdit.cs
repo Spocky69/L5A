@@ -81,4 +81,11 @@ class ButtonEdit : MonoBehaviour
 				break;
 		}
 	}
+
+	public void CancelEdit()
+	{
+		_text.text = _editString;
+		_text.fontSize = 37.5f;
+		_state = States.Edit;
+	}
 }

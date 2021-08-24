@@ -14,16 +14,23 @@ public class CharacterPage : MonoBehaviour
 	[SerializeField] private StatisticsResultsPanel _statisticsResultsPanel = null;
 
 	[Header("Buttons")]
-	[SerializeField] private Button _buttonLoad;
+	[SerializeField] private Button _buttonCancel;
 	[SerializeField] private ButtonEdit _buttonEdit;
 	[SerializeField] private Button _buttonLaunch;
+
+	[Header("Edit Mode")]
+	[SerializeField] List<Image> _editImages = new List<Image>();
+	[SerializeField] List<GameObject> _editInactivate = new List<GameObject>();
+	[SerializeField] private Color _normalColor = Color.white;
+	[SerializeField] private Color _editColor = Color.green;
 
 	private Character _character = null;
 
 	private void Start()
 	{
 		Reset();
-		_buttonLoad.onClick.AddListener(Load);
+		_buttonCancel.onClick.AddListener(Load);
+		_buttonCancel.gameObject.SetActive(false);
 	}
 
 	private void Reset()
@@ -60,6 +67,10 @@ public class CharacterPage : MonoBehaviour
 
 		_characteristicsDrawer.Init(_character);
 		_competencesDrawer.Init(_character);
+
+
+		Edit(false);
+		_buttonEdit.CancelEdit();
 	}
 
 	public void OnUpdateValue()
@@ -72,14 +83,35 @@ public class CharacterPage : MonoBehaviour
 		string data = JsonUtility.ToJson(_character);
 		string filePath = Character.ComputeFilePath();
 		File.WriteAllText(filePath, data);
-		_characteristicsDrawer.Edit(false);
-		_competencesDrawer.Edit(false);
+		Edit(false);
 	}
 
 	private void Edit()
 	{
-		_characteristicsDrawer.Edit(true);
-		_competencesDrawer.Edit(true);
+		Edit(true);
+	}
+
+	private void Edit(bool edit)
+	{
+		_characteristicsDrawer.Edit(edit);
+		_competencesDrawer.Edit(edit);
+		_buttonCancel.gameObject.SetActive(edit);
+
+		Color newColor = _normalColor;
+		if (edit)
+		{
+			newColor = _editColor;
+		}
+
+		foreach (Image image in _editImages)
+		{
+			image.color = newColor;
+		}
+
+		foreach (GameObject gameObject in _editInactivate)
+		{
+			gameObject.SetActive(!edit);
+		}
 	}
 
 	public void SetSelectedCompetenceDrawer(CompetenceDrawer competenceDrawer)
@@ -87,7 +119,7 @@ public class CharacterPage : MonoBehaviour
 		_diceRollerCharacterDrawer.SetSelectedCompetenceDrawer(competenceDrawer);
 	}
 
-	public void SetSelectedTraitDrawer(TraitDrawer traitDrawer)
+	public void SetSelectedTraitDrawer(ISelected traitDrawer)
 	{
 		_diceRollerCharacterDrawer.SetSelectedTraitDrawer(traitDrawer);
 	}

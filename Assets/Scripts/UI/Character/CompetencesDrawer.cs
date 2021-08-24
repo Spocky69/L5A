@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class CompetencesDrawer : MonoBehaviour
 {
+	[SerializeField] private CompetenceDrawer _rangDeMaitriseDrawers = new CompetenceDrawer();
+	[SerializeField] private CompetenceDrawer _rangDeReputationDrawers = new CompetenceDrawer();
 	[SerializeField] private List<CompetenceDrawer> _competencesDrawers = new List<CompetenceDrawer>();
 
 	public int NbCompencesDrawer { get { return _competencesDrawers.Count; } }
@@ -14,6 +16,8 @@ public class CompetencesDrawer : MonoBehaviour
 	public void Reset(CharacterPage characterPage)
 	{
 		_characterPage = characterPage;
+		_rangDeMaitriseDrawers.Reset(this);
+		_rangDeReputationDrawers.Reset(this);
 		foreach (CompetenceDrawer competenceDrawer in _competencesDrawers)
 		{
 			competenceDrawer.Reset(this);
@@ -22,6 +26,9 @@ public class CompetencesDrawer : MonoBehaviour
 
 	public void Init(Character character)
 	{
+		_rangDeMaitriseDrawers.Init(character.RangDeMaitrise);
+		_rangDeReputationDrawers.Init(character.RangDeReputation);
+
 		int nbCompetences = _competencesDrawers.Count;
 		for (int i = 0; i < nbCompetences; i++)
 		{
@@ -34,6 +41,9 @@ public class CompetencesDrawer : MonoBehaviour
 
 	public void Edit(bool edit)
 	{
+		_rangDeMaitriseDrawers.Edit(edit);
+		_rangDeReputationDrawers.Edit(edit);
+
 		foreach (CompetenceDrawer competenceDrawer in _competencesDrawers)
 		{
 			competenceDrawer.Edit(edit);
@@ -42,6 +52,9 @@ public class CompetencesDrawer : MonoBehaviour
 
 	public void SetSelected(CompetenceDrawer competenceDrawerSelected)
 	{
+		_rangDeMaitriseDrawers.SetSelected(_rangDeMaitriseDrawers == competenceDrawerSelected);
+		_rangDeReputationDrawers.SetSelected(_rangDeReputationDrawers == competenceDrawerSelected);
+
 		foreach (CompetenceDrawer competenceDrawer in _competencesDrawers)
 		{
 			competenceDrawer.SetSelected(competenceDrawer == competenceDrawerSelected);

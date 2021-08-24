@@ -21,8 +21,12 @@ public class StatisticsConfigDrawer : MonoBehaviour
 		_nbKeepDices.text = "0";
 		_bonus.gameObject.SetActive(false);
 		_bonus.text = "0";
-		_nbAugmentation.gameObject.SetActive(false);
-		_nbAugmentation.text = "0";
+
+		if (_nbAugmentation != null)
+		{
+			_nbAugmentation.gameObject.SetActive(false);
+			_nbAugmentation.text = "0";
+		}
 	}
 
 	public void Fill(RollDicesConfig rollDiceConfig)
