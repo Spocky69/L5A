@@ -17,18 +17,6 @@ public class Character
 
 	private const string FILENAME = "Character";
 	private static string[] TRAITS_NAME = new string[] { "AGI", "INTEL", "REF", "INTUI", "CON", "VOL", "FOR", "PER", "VIDE" };
-	private static string[] COMPETENCES_NAME = new string[]
-	{
-		"AGI",
-		"INTEL",
-		"REF",
-		"INTUI",
-		"CON",
-		"VOL",
-		"FOR",
-		"PER",
-		"VIDE"
-	};
 
 	private const int NB_RING = 5;
 
