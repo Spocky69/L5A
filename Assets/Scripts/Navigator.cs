@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -55,5 +53,14 @@ public class Navigator : MonoBehaviour
 	public void OnSetCharacterPageButton()
 	{
 		SetPage(Page.Character);
+	}
+
+	public void Update()
+	{
+		// Check if Back was pressed this frame
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			BackContext.RemoveTopBackElement();
+		}
 	}
 }

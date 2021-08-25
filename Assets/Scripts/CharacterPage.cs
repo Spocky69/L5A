@@ -25,12 +25,15 @@ public class CharacterPage : MonoBehaviour
 	[SerializeField] private Color _editColor = Color.green;
 
 	private Character _character = null;
+	private BackElement _backElement = new BackElement();
+	private bool _edit = false;
 
 	private void Start()
 	{
 		Reset();
-		_buttonCancel.onClick.AddListener(Load);
+		_buttonCancel.onClick.AddListener(Cancel);
 		_buttonCancel.gameObject.SetActive(false);
+		_backElement.ActionBackHandler += OnBackButton;
 	}
 
 	private void Reset()
@@ -44,10 +47,10 @@ public class CharacterPage : MonoBehaviour
 		_buttonLaunch.onClick.AddListener(OnButtonLaunch);
 		_diceRollerCharacterDrawer.Reset();
 		_statisticsResultsPanel.Reset();
-		Load();
+		Cancel();
 	}
 
-	private void Load()
+	private void Cancel()
 	{
 		string filaPath = Character.ComputeFilePath();
 		if (File.Exists(filaPath))
@@ -84,6 +87,7 @@ public class CharacterPage : MonoBehaviour
 		string filePath = Character.ComputeFilePath();
 		File.WriteAllText(filePath, data);
 		Edit(false);
+
 	}
 
 	private void Edit()
@@ -93,24 +97,37 @@ public class CharacterPage : MonoBehaviour
 
 	private void Edit(bool edit)
 	{
-		_characteristicsDrawer.Edit(edit);
-		_competencesDrawer.Edit(edit);
-		_buttonCancel.gameObject.SetActive(edit);
-
-		Color newColor = _normalColor;
-		if (edit)
+		if(_edit != edit)
 		{
-			newColor = _editColor;
-		}
+			_edit = edit;
+			_characteristicsDrawer.Edit(edit);
+			_competencesDrawer.Edit(edit);
+			_buttonCancel.gameObject.SetActive(edit);
 
-		foreach (Image image in _editImages)
-		{
-			image.color = newColor;
-		}
+			Color newColor = _normalColor;
+			if (edit)
+			{
+				newColor = _editColor;
+			}
 
-		foreach (GameObject gameObject in _editInactivate)
-		{
-			gameObject.SetActive(!edit);
+			foreach (Image image in _editImages)
+			{
+				image.color = newColor;
+			}
+
+			foreach (GameObject gameObject in _editInactivate)
+			{
+				gameObject.SetActive(!edit);
+			}
+
+			if (edit)
+			{
+				BackContext.AddBackElement(_backElement);
+			}
+			else
+			{
+				BackContext.RemoveBackElement(_backElement);
+			}
 		}
 	}
 
@@ -131,6 +148,10 @@ public class CharacterPage : MonoBehaviour
 		await RollDicesSystem.Launch(rollDicesConfig);
 		_statisticsResultsPanel.FillValueFromResult();
 		_buttonLaunch.interactable = true;
+	}
 
+	public void OnBackButton()
+	{
+		Cancel();
 	}
 }
